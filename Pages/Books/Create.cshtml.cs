@@ -10,7 +10,7 @@ using Nechita_Andrei_Lab8.Models;
 
 namespace Nechita_Andrei_Lab8.Pages.Books
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BookCategoriesPageModel
     {
         private readonly Nechita_Andrei_Lab8.Data.Nechita_Andrei_Lab8Context _context;
 
@@ -22,6 +22,12 @@ namespace Nechita_Andrei_Lab8.Pages.Books
         public IActionResult OnGet()
         {
             ViewData["PublisherId"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+
+            var book = new Book();
+            book.BookCategories = new List<BookCategory>();
+
+            PopulateAssignedCategoryData(_context, book);
+
             return Page();
         }
 
@@ -30,8 +36,36 @@ namespace Nechita_Andrei_Lab8.Pages.Books
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
+            var newBook = new Book();
+
+            if (selectedCategories != null)
+            {
+                newBook.BookCategories = new List<BookCategory>();
+                foreach (var cat in selectedCategories)
+                {
+                    var catToAdd = new BookCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+                    newBook.BookCategories.Add(catToAdd);
+                }
+            }
+            if (await TryUpdateModelAsync<Book>(
+                    newBook,
+                    "Book",
+                    i => i.Title, i => i.Author, i=>i.Price, i=>i.PublishingDate, i=>i.PublisherId
+                
+                ))
+            {
+                _context.Book.Add(newBook);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+            PopulateAssignedCategoryData(_context, newBook);
+            return Page();
+            /*
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -41,6 +75,8 @@ namespace Nechita_Andrei_Lab8.Pages.Books
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+            */
         }
+        
     }
 }
