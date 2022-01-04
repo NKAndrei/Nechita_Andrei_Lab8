@@ -12,7 +12,7 @@ namespace Nechita_Andrei_Lab8.Models
         public int ID { get; set; }
 
         [Required, StringLength(150, MinimumLength = 3)]
-        [Display(Name = "Book Title")]
+        [Display(Name = "Book Title33")]
         public string Title { get; set; }
 
         [RegularExpression(@"^[A-Z][a-z]+\s[A-Z][a-z]+$", ErrorMessage = "Numele autorului trebuie sa fie de forma 'Prenume Nume'"), Required,StringLength(50, MinimumLength = 3)]

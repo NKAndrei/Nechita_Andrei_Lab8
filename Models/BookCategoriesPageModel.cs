@@ -12,7 +12,8 @@ namespace Nechita_Andrei_Lab8.Models
 
         public List<AssignedCategoryData> AssignedCategoryDataList;
 
-        public void PopulateAssignedCategoryData(Nechita_Andrei_Lab9Context context, Book book)
+       // public void PopulateAssignedCategoryData(Nechita_Andrei_Lab9Context context, Book book)
+        public void PopulateAssignedCategoryData(Nechita_Andrei_Lab8Context context, Book book)
         {
             var allCategories = context.Category;
             var bookCategories = new HashSet<int>(book.BookCategories.Select(c=>c.CategoryID));
@@ -31,7 +32,8 @@ namespace Nechita_Andrei_Lab8.Models
 
         }
 
-        public void UpdateBookCategories(Nechita_Andrei_Lab9Context context, string[] selectedCategories, Book bookToUpdate)
+        //public void UpdateBookCategories(Nechita_Andrei_Lab9Context context, string[] selectedCategories, Book bookToUpdate)
+        public void UpdateBookCategories(Nechita_Andrei_Lab8Context context, string[] selectedCategories, Book bookToUpdate)
         {
             if (selectedCategories == null)
             {

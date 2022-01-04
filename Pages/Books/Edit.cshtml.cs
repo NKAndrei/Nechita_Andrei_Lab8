@@ -22,6 +22,7 @@ namespace Nechita_Andrei_Lab8.Pages.Books
 
         [BindProperty]
         public Book Book { get; set; }
+        public List<String> validationErrors;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -53,6 +54,15 @@ namespace Nechita_Andrei_Lab8.Pages.Books
 
             var bookToUpdate = await _context.Book.Include(i => i.Publisher).Include(i => i.BookCategories).ThenInclude(i => i.Category).FirstOrDefaultAsync(s => s.ID == id);
 
+            validationErrors = ModelState.Values.Where(E => E.Errors.Count > 0)
+.SelectMany(E => E.Errors)
+.Select(E => E.ErrorMessage)
+.ToList();
+            if (!ModelState.IsValid)
+            {
+                //return NotFound();
+                return Page();
+            }
             if (bookToUpdate == null)
             {
                 return NotFound();

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nechita_Andrei_Lab8.Data;
 using Nechita_Andrei_Lab8.Models;
+using System.IO;
 
 namespace Nechita_Andrei_Lab8.Pages.Books
 {
@@ -36,14 +37,14 @@ namespace Nechita_Andrei_Lab8.Pages.Books
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategoriess)
         {
             var newBook = new Book();
-
-            if (selectedCategories != null)
+      
+            if (selectedCategoriess != null)
             {
                 newBook.BookCategories = new List<BookCategory>();
-                foreach (var cat in selectedCategories)
+                foreach (var cat in selectedCategoriess)
                 {
                     var catToAdd = new BookCategory
                     {
